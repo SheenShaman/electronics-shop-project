@@ -1,3 +1,9 @@
+import csv
+import os
+
+items_csv = os.path.join(os.path.dirname(__file__), '../src/items.csv')
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -13,7 +19,8 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.name = name
+
+        self.__name = name
         self.price = price
         self.quantity = quantity
 
@@ -32,3 +39,37 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price *= Item.pay_rate
+
+    @property
+    def name(self):
+        """ Геттер для атрибута name """
+        return self.__name
+
+    @name.setter
+    def name(self, name):
+        """
+        Сеттер name проверяет, что длина наименования товара не больше 10 симвовов.
+        В противном случае, обрезает строку
+        """
+        if len(name) > 10:
+            self.__name = name[:10]
+        else:
+            self.__name = name
+
+    @classmethod
+    def instantiate_from_csv(cls):
+        """
+        Класс-метод, инициализирующий экземпляры класса Item данными из файла src/items.csv
+        """
+        Item.all = []
+        with open(items_csv, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                cls(row['name'], row['price'], row['quantity'])
+
+    @staticmethod
+    def string_to_number(string):
+        """
+        Статический метод, возвращающий число из числа-строки
+        """
+        return int(float(string))

@@ -1,13 +1,32 @@
 from src.item import Item
-
-item1 = Item("Смартфон", 10000, 20)
-item2 = Item("Ноутбук", 20000, 5)
+import pytest
 
 
-def test_calculate_total_price():
-    assert item1.calculate_total_price() == 200000
-    assert item2.calculate_total_price() == 100000
+@pytest.fixture
+def coll():
+    return Item("Смартфон", 10000, 20)
 
 
-def test_apply_discount():
-    assert item1.apply_discount() is None
+def test_calculate_total_price(coll):
+    assert coll.calculate_total_price() == 200000
+
+
+def test_apply_discount(coll):
+    assert coll.apply_discount() is None
+
+
+def test_name(coll):
+    coll.name = 'Смартфон'
+    assert coll.name == 'Смартфон'
+    coll.name = 'СуперСмартфон'
+    assert coll.name == 'СуперСмарт'
+
+
+def test_instantiate_from_csv(coll):
+    coll.instantiate_from_csv()
+    assert len(coll.all) == 5
+
+
+def test_string_to_number(coll):
+    assert coll.string_to_number('5') == 5
+    assert coll.string_to_number('12.99') == 12
