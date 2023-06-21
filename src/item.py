@@ -26,6 +26,12 @@ class Item:
 
         Item.all.append(self)
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self.name}, {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return f"{self.name}"
+
     def calculate_total_price(self) -> float:
         """
         Рассчитывает общую стоимость конкретного товара в магазине.
@@ -73,3 +79,6 @@ class Item:
         Статический метод, возвращающий число из числа-строки
         """
         return int(float(string))
+
+#item1 = Item('Смартфон', 10000, 20)
+#print(repr(item1))

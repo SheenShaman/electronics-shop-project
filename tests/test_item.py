@@ -7,6 +7,14 @@ def coll():
     return Item("Смартфон", 10000, 20)
 
 
+def test_repr(coll):
+    assert coll.__repr__() == 'Item(Смартфон, 10000, 20)'
+
+
+def test_str(coll):
+    assert coll.__str__() == 'Смартфон'
+
+
 def test_calculate_total_price(coll):
     assert coll.calculate_total_price() == 200000
 
