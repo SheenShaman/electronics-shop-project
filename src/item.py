@@ -27,10 +27,15 @@ class Item:
         Item.all.append(self)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self.name}, {self.price}, {self.quantity})"
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
 
     def __str__(self):
         return f"{self.name}"
+
+    def __add__(self, other):
+        if isinstance(other, self.__class__):
+            return self.quantity + other.quantity
+        raise Exception
 
     def calculate_total_price(self) -> float:
         """
@@ -79,6 +84,3 @@ class Item:
         Статический метод, возвращающий число из числа-строки
         """
         return int(float(string))
-
-#item1 = Item('Смартфон', 10000, 20)
-#print(repr(item1))
