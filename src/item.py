@@ -1,7 +1,6 @@
 import csv
 import os
-
-items_csv = os.path.join(os.path.dirname(__file__), '../src/items.csv')
+from src.csv_error import InstantiateCSVError
 
 
 class Item:
@@ -72,11 +71,19 @@ class Item:
         """
         Класс-метод, инициализирующий экземпляры класса Item данными из файла src/items.csv
         """
-        Item.all = []
-        with open(items_csv, newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                cls(row['name'], row['price'], row['quantity'])
+        items_csv = os.path.join(os.path.dirname(__file__), '../src/items.csv')
+
+        try:
+            Item.all = []
+            with open(items_csv, newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if "name" and "price" and "quantity" in row:
+                        cls(row['name'], row['price'], row['quantity'])
+                    else:
+                        raise InstantiateCSVError
+        except FileNotFoundError:
+            raise FileNotFoundError('Отсутствует файл item.csv')
 
     @staticmethod
     def string_to_number(string):

@@ -1,6 +1,7 @@
+import pytest
 from src.item import Item
 from src.phone import Phone
-import pytest
+from src.csv_error import InstantiateCSVError
 
 
 @pytest.fixture
@@ -39,6 +40,16 @@ def test_name_item(item):
 def test_instantiate_from_csv_item(item):
     item.instantiate_from_csv()
     assert len(item.all) == 5
+
+
+def test_instantiate_csv_error():
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv()
+
+
+def test_instantiate_file_not_found_error():
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv()
 
 
 def test_string_to_number_item(item):
